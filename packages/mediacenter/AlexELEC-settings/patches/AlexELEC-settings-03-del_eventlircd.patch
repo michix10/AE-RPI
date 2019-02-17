@@ -1,0 +1,78 @@
+diff -Naurp AlexELEC-settings/src/defaults.py AlexELEC-settings-patch/src/defaults.py
+--- AlexELEC-settings/src/defaults.py	2019-02-14 11:44:16.000000000 +0200
++++ AlexELEC-settings-patch/src/defaults.py	2019-02-15 12:27:03.000000000 +0200
+@@ -175,7 +175,6 @@ _services = {
+     'bluez': ['bluetooth.service'],
+     'obexd': ['obex.service'],
+     'crond': ['cron.service'],
+-    'eventlircd': ['eventlircd.service'],
+     'iptables': ['iptables.service'],
+     'acestream': ['acestream.service'],
+     'torrserver': ['torrserver.service'],
+diff -Naurp AlexELEC-settings/src/resources/lib/modules/services.py AlexELEC-settings-patch/src/resources/lib/modules/services.py
+--- AlexELEC-settings/src/resources/lib/modules/services.py	2019-02-14 11:44:16.000000000 +0200
++++ AlexELEC-settings-patch/src/resources/lib/modules/services.py	2019-02-15 12:28:47.000000000 +0200
+@@ -266,21 +266,6 @@ class services:
+                             },
+                         },
+                     },
+-                'eventlircd': {
+-                    'order': 7,
+-                    'name': 32391,
+-                    'not_supported': [],
+-                    'settings': {
+-                        'eventlircd_autostart': {
+-                            'order': 1,
+-                            'name': 32392,
+-                            'value': None,
+-                            'action': 'initialize_eventlircd',
+-                            'type': 'bool',
+-                            'InfoText': 747,
+-                            },
+-                        },
+-                    },
+                 'tvip': {
+                     'order': 8,
+                     'name': 32860,
+@@ -365,7 +350,6 @@ class services:
+             self.initialize_avahi(service=1)
+             self.initialize_cron(service=1)
+             self.init_bluetooth(service=1)
+-            self.initialize_eventlircd(service=1)
+             self.initialize_tvip()
+             self.oe.dbg_log('services::start_service', 'exit_function', 0)
+         except Exception, e:
+@@ -474,9 +458,6 @@ class services:
+                 else:
+                     self.struct['bluez']['hidden'] = 'true'
+ 
+-            # LIRCD
+-            self.struct['eventlircd']['settings']['eventlircd_autostart']['value'] = self.oe.get_service_state('eventlircd')
+-
+             # TVIP
+             if not os.path.isfile(self.TVIP_DAEMON):
+                 self.struct['tvip']['hidden'] = 'true'
+@@ -647,23 +628,6 @@ class services:
+             self.oe.set_busy(0)
+             self.oe.dbg_log('services::init_obex', 'ERROR: (' + repr(e) + ')', 4)
+ 
+-    def initialize_eventlircd(self, **kwargs):
+-        try:
+-            self.oe.dbg_log('services::initialize_eventlircd', 'enter_function', 0)
+-            self.oe.set_busy(1)
+-            if 'listItem' in kwargs:
+-                self.set_value(kwargs['listItem'])
+-            state = 0
+-            options = {}
+-            if self.struct['eventlircd']['settings']['eventlircd_autostart']['value'] == '1':
+-                state = 1
+-            self.oe.set_service('eventlircd', options, state)
+-            self.oe.set_busy(0)
+-            self.oe.dbg_log('services::initialize_eventlircd', 'exit_function', 0)
+-        except Exception, e:
+-            self.oe.set_busy(0)
+-            self.oe.dbg_log('services::initialize_eventlircd', 'ERROR: (' + repr(e) + ')', 4)
+-
+     def exit(self):
+         try:
+             self.oe.dbg_log('services::exit', 'enter_function', 0)

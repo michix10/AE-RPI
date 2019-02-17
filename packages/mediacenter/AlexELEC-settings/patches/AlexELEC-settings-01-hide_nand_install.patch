@@ -1,0 +1,24 @@
+diff -Naurp AlexELEC-settings/src/resources/lib/modules/system.py AlexELEC-settings-patch/src/resources/lib/modules/system.py
+--- AlexELEC-settings/src/resources/lib/modules/system.py	2019-02-14 11:44:16.000000000 +0200
++++ AlexELEC-settings-patch/src/resources/lib/modules/system.py	2019-02-15 11:17:33.000000000 +0200
+@@ -385,6 +385,7 @@ class system:
+                 self.struct['ident']['settings']['hostname']['value'] = self.oe.DISTRIBUTION
+ 
+             # Nand
++            self.struct['nand']['hidden'] = 'true'
+             self.struct['nand']['settings']['full_set']['value'] = \
+             self.oe.get_service_option('nand', 'FULL_SET', self.D_FULL_SET).replace('"', '')
+         except Exception, e:
+@@ -927,8 +928,10 @@ class system:
+             if 'listItem' in kwargs:
+                 self.set_value(kwargs['listItem'])
+             options = {}
+-            state = 1
+-            options['FULL_SET'] = '"%s"' % self.struct['nand']['settings']['full_set']['value']
++            state = 0
++            if not 'hidden' in self.struct['nand']:
++                state = 1
++                options['FULL_SET'] = '"%s"' % self.struct['nand']['settings']['full_set']['value']
+             self.oe.set_service('nand', options, state)   
+             self.oe.set_busy(0)
+             self.oe.dbg_log('system::initialize_nand', 'exit_function', 0)

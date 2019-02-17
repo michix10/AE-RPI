@@ -1,0 +1,45 @@
+diff -Naurp AlexELEC-settings/src/resources/bin/ace-get.sh AlexELEC-settings-patch/src/resources/bin/ace-get.sh
+--- AlexELEC-settings/src/resources/bin/ace-get.sh	2019-02-14 11:44:16.000000000 +0200
++++ AlexELEC-settings-patch/src/resources/bin/ace-get.sh	2019-02-15 11:22:35.000000000 +0200
+@@ -3,8 +3,8 @@
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ # Copyright (C) 2011-present Alex@ELEC (http://alexelec.in.ua)
+ 
+-URL_LAST="https://raw.githubusercontent.com/AlexELEC/acestream-aml/master/latest"
+-URL_MAIN="https://github.com/AlexELEC/acestream-aml/releases/download"
++URL_LAST="https://raw.githubusercontent.com/AlexELEC/acestream-rpi/master/latest"
++URL_MAIN="https://github.com/AlexELEC/acestream-rpi/releases/download"
+ 
+ ACE_DIR="/storage/.config/acestream"
+ TEMP_DIR="/storage/.kodi/temp"
+@@ -15,13 +15,13 @@ VER=$(curl -s "$URL_LAST")
+ 
+ # download URL
+   if [ "$1" == "url" ] ; then
+-      echo "$URL_MAIN/$VER/acestream-aml-$VER.tar.bz2"
++      echo "$URL_MAIN/$VER/acestream-rpi-$VER.tar.bz2"
+ 
+ # unpack
+   elif [ "$1" == "unpack" ] ; then
+       mkdir -p $ACE_DIR
+-      tar -jxf $TEMP_DIR/acestream-aml-$VER.tar.bz2 -C $ACE_DIR
+-      rm -f $TEMP_DIR/acestream-aml-$VER.tar.bz2
++      tar -jxf $TEMP_DIR/acestream-rpi-$VER.tar.bz2 -C $ACE_DIR
++      rm -f $TEMP_DIR/acestream-rpi-$VER.tar.bz2
+       touch $ACE_DIR/installed.acestream
+   fi
+ 
+diff -Naurp AlexELEC-settings/src/resources/bin/update.sh AlexELEC-settings-patch/src/resources/bin/update.sh
+--- AlexELEC-settings/src/resources/bin/update.sh	2019-02-14 11:44:16.000000000 +0200
++++ AlexELEC-settings-patch/src/resources/bin/update.sh	2019-02-15 11:20:34.000000000 +0200
+@@ -5,8 +5,8 @@
+ 
+ . /etc/os-release
+ 
+-URL_MAIN="https://github.com/AlexELEC/AE-AML/releases/download"
+-URL_LAST="https://github.com/AlexELEC/AE-AML/releases/latest"
++URL_MAIN="https://github.com/AlexELEC/AE-RPI/releases/download"
++URL_LAST="https://github.com/AlexELEC/AE-RPI/releases/latest"
+ 
+ ################################# MAIN #########################################
+ 
